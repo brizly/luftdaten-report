@@ -1,0 +1,16 @@
+#!/bin/bash
+#gesamt
+echo "sensor_id;sensor_type;location;lat;lon;timestamp;P1;durP1;ratioP1;P2;durP2;ratioP2" > sds011.csv
+find ../rohdaten -name "*_sds011_*" -exec cat {} \; | grep -v sensor_id >> sds011.csv
+echo "sensor_id;sensor_type;location;lat;lon;timestamp;temperature;humidity" > dht22.csv
+find ../rohdaten -name "*_dht22_*" -exec cat {} \; | grep -v sensor_id >> dht22.csv
+#lehrte
+echo "sensor_id;sensor_type;location;lat;lon;timestamp;P1;durP1;ratioP1;P2;durP2;ratioP2" > sds011-lehrte.csv
+find ../rohdaten -regextype sed -regex ".*/*_sds011_sensor_\(5424\|5426\|5428\|5430\|5432\|5434\|5436\|5440\|5438\|5442\|5444\|5393\|5446\|5448\|6181\)\.csv" -exec cat {} \; | grep -v sensor_id >> sds011-lehrte.csv
+echo "sensor_id;sensor_type;location;lat;lon;timestamp;temperature;humidity" > dht22-lehrte.csv
+find ../rohdaten -regextype sed -regex ".*/*_dht22_sensor_\(5425\|5427\|5429\|5431\|5433\|5435\|5437\|5441\|5439\|5443\|5445\|5394\|5447\|5449\|6182\)\.csv" -exec cat {} \; | grep -v sensor_id >> dht22-lehrte.csv
+
+#split timestamp to separate date and time:
+#...;2017-09-27T00:07:54;... gets ...;2017-09-27;00:07:54;...
+sed -i -e 's/timestamp/date;time/g' -i *.csv
+sed -i -r 's/([0-9]{4}-[0-9]{2}-[0-9]{2})T([0-9]{2}:[0-9]{2}:[0-9]{2})/\1;\2/g' *.csv
