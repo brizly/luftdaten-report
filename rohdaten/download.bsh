@@ -1,0 +1,31 @@
+#!/bin/bash
+
+archiv="https://archive.luftdaten.info"
+sensorsSds011=( 5424 5426 5428 5430 5432 5434 5436 5440 5438 5442 5444 5393 5446 5448 6181)
+sensorsDht22=(  5425 5427 5429 5431 5433 5435 5437 5441 5439 5443 5445 5394 5447 5449 6182)
+
+d=2017-09-01
+while [ "$d" != 2017-12-31 ]; do 
+    echo -n "$d sds011 "
+    for i in "${sensorsSds011[@]}"; do
+	echo -n "$i "
+	file="${d}_sds011_sensor_${i}.csv"
+	if curl "${archiv}/${d}/${file}" -o /dev/null -s --head --fail; then
+	    curl "${archiv}/${d}/${file}" \
+		 -o "${file}" \
+		 -s
+	fi
+    done
+    echo -n "dht22 "
+    for i in "${sensorsDht22[@]}"; do
+	echo -n "$i "
+	file="${d}_dht22_sensor_${i}.csv"
+	if curl "${archiv}/${d}/${file}" -o /dev/null -s --head --fail; then
+	curl "${archiv}/${d}/${file}" \
+	     -o "${file}" \
+	     -s
+	fi
+    done
+    echo
+    d=$(date -I -d "$d + 1 day")
+done
