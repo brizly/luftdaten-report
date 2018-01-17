@@ -1,0 +1,14 @@
+#!/bin/bash
+echo -n "
+set title 'Forkbomb, Attack!!'
+set output 'forkbomb.png'
+set terminal png size 1920,1200
+set datafile separator ';'
+set xdata time
+set timefmt '%Y-%m-%dT%H:%M:%S'
+set xtics format '%d'
+set yrange [0:50]
+plot "
+find ../xlsCsv/ -name "sds011-lehrte-*" | while read file; do
+    echo  " '${file}' using 6:7 title \"\","
+done
