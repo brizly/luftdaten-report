@@ -1,14 +1,26 @@
 #!/bin/bash
-echo -n "
-set title 'Forkbomb, Attack!!'
-set output 'forkbomb.png'
-set terminal png size 1920,1200
+loc=$1
+ym=$2
+echo -n "set title '${loc} ${ym}'
+set output '${loc}-${ym}.png'
+set terminal png size 1920,1200 font ',12'
 set datafile separator ';'
 set xdata time
 set timefmt '%Y-%m-%dT%H:%M:%S'
 set xtics format '%d'
-set yrange [0:50]
+set yrange [-10:250]
+set xrange ['${ym}-01':'${ym}-31']
 plot "
-find ../xlsCsv/ -name "sds011-lehrte-*" | while read file; do
-    echo  " '${file}' using 6:7 title \"\","
+#staub
+find ../xlsCsv/ -name "sds011-${loc}-*" | while read file; do
+    echo  " '${file}' using 6:7 lt rgb '#FF00FF' title \"\",\\"
 done
+#temp
+find ../xlsCsv/ -name "dht22-${loc}-*" | while read file; do
+    echo  " '${file}' using 6:7 lt rgb '#00FFFF' title \"\",\\"
+done
+#feuchte
+find ../xlsCsv/ -name "dht22-${loc}-*" | while read file; do
+    echo  " '${file}' using 6:8 lt rgb '#0000FF' title \"\",\\"
+done
+
