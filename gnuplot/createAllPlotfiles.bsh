@@ -1,0 +1,5 @@
+#!/bin/bash
+for ym in '2017-09' '2017-10' '2017-11' '2017-12' '2018-01'; do
+    ./createPlotfile.bsh lehrte $ym > lehrte-$ym.gnuplot
+    gnuplot -c lehrte-$ym.gnuplot
+done
