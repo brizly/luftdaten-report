@@ -3,7 +3,7 @@ loc=$1
 ym=$2
 echo -n "set title '${loc} ${ym}'
 set output '${loc}-${ym}.png'
-set terminal png size 1920,1200 font ',12'
+set terminal png size 1920,1000 font ',12'
 set datafile separator ';'
 set xdata time
 set timefmt '%Y-%m-%dT%H:%M:%S'
@@ -11,9 +11,13 @@ set xtics format '%d'
 set yrange [-10:250]
 set xrange ['${ym}-01':'${ym}-31']
 plot "
-#staub
+#staub pm10
 find ../xlsCsv/ -name "sds011-${loc}-*" | while read file; do
     echo  " '${file}' using 6:7 lt rgb '#FF00FF' title \"\",\\"
+done
+#staub pm2.5
+find ../xlsCsv/ -name "sds011-${loc}-*" | while read file; do
+    echo  " '${file}' using 6:10 lt rgb '#8800FF' title \"\",\\"
 done
 #temp
 find ../xlsCsv/ -name "dht22-${loc}-*" | while read file; do
