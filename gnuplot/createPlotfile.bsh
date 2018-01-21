@@ -1,30 +1,56 @@
 #!/bin/bash
 loc=$1
 ym=$2
-echo -n "set title '${loc} ${ym}'
-set output '${loc}-${ym}.png'
+ls="ls 7" #linestyle
+ps="ps 0.3" #pointsize
+echo -n "set output '${loc}-${ym}.png'
 set terminal png size 1920,1000 font ',12'
 set datafile separator ';'
 set xdata time
 set timefmt '%Y-%m-%dT%H:%M:%S'
 set xtics format '%d'
-set yrange [-10:250]
+set yrange [-10:200]
 set xrange ['${ym}-01':'${ym}-31']
-plot "
+"
+echo -n "plot "
 #staub pm10
 find ../xlsCsv/ -name "sds011-${loc}-*" | while read file; do
-    echo  " '${file}' using 6:7 lt rgb '#FF00FF' title \"\",\\"
+    echo  " '${file}' using 6:7 w p ${ls} ${ps} lc rgb '#1c1c1c' notitle,\\"
 done
-#staub pm2.5
+##staub pm2.5
 find ../xlsCsv/ -name "sds011-${loc}-*" | while read file; do
-    echo  " '${file}' using 6:10 lt rgb '#8800FF' title \"\",\\"
+    echo  " '${file}' using 6:10 w p ${ls} ${ps} lc rgb '#585858' notitle,\\"
 done
 #temp
 find ../xlsCsv/ -name "dht22-${loc}-*" | while read file; do
-    echo  " '${file}' using 6:7 lt rgb '#00FFFF' title \"\",\\"
+    echo  " '${file}' using 6:7 w p ${ls} ${ps} lc rgb '#B40404' notitle,\\"
 done
 #feuchte
 find ../xlsCsv/ -name "dht22-${loc}-*" | while read file; do
-    echo  " '${file}' using 6:8 lt rgb '#0000FF' title \"\",\\"
+    echo  " '${file}' using 6:8 w p ${ls} ${ps} lc rgb '#0040FF' notitle,\\"
 done
+#gaa pm10
+if [ $loc = "hannover" ]; then
+    echo  " '../gaa/gaa-messwerte-pm10-gnuplot.csv' using 1:2 w p ${ls} ${ps} lc rgb '#bCbCbC' notitle,\\"
+    echo  " '../gaa/gaa-messwerte-pm10-gnuplot.csv' using 1:3 w p ${ls} ${ps} lc rgb '#bCbCbC' notitle,\\"
+    echo  " '../gaa/gaa-messwerte-feuchte-gnuplot.csv' using 1:2 w p ${ls} ${ps} lc rgb '#0060FF' notitle,\\"
+    echo  " '../gaa/gaa-messwerte-feuchte-gnuplot.csv' using 1:3 w p ${ls} ${ps} lc rgb '#0060FF' notitle,\\"
+elif [ $loc = "braunschweig" ]; then
+    echo  " '../gaa/gaa-messwerte-pm10-gnuplot.csv' using 1:4 w p ${ls} ${ps} lc rgb '#bCbCbC' notitle,\\"
+    echo  " '../gaa/gaa-messwerte-pm10-gnuplot.csv' using 1:5 w p ${ls} ${ps} lc rgb '#bCbCbC' notitle,\\"
+    echo  " '../gaa/gaa-messwerte-feuchte-gnuplot.csv' using 1:4 w p ${ls} ${ps} lc rgb '#0060FF' notitle,\\"
+    echo  " '../gaa/gaa-messwerte-feuchte-gnuplot.csv' using 1:5 w p ${ls} ${ps} lc rgb '#0060FF' notitle,\\"
+elif [ $loc = "lehrte" ]; then
+    echo  " '../gaa/gaa-messwerte-pm10-gnuplot.csv' using 1:2 w p ${ls} ${ps} lc rgb '#bCbCbC' notitle,\\"
+    echo  " '../gaa/gaa-messwerte-pm10-gnuplot.csv' using 1:3 w p ${ls} ${ps} lc rgb '#bCbCbC' notitle,\\"
+    echo  " '../gaa/gaa-messwerte-pm10-gnuplot.csv' using 1:4 w p ${ls} ${ps} lc rgb '#bCbCbC' notitle,\\"
+    echo  " '../gaa/gaa-messwerte-pm10-gnuplot.csv' using 1:5 w p ${ls} ${ps} lc rgb '#bCbCbC' notitle,\\"
+    echo  " '../gaa/gaa-messwerte-pm10-gnuplot.csv' using 1:6 w p ${ls} ${ps} lc rgb '#bCbCbC' notitle,\\"
+    echo  " '../gaa/gaa-messwerte-feuchte-gnuplot.csv' using 1:2 w p ${ls} ${ps} lc rgb '#0060FF' notitle,\\"
+    echo  " '../gaa/gaa-messwerte-feuchte-gnuplot.csv' using 1:3 w p ${ls} ${ps} lc rgb '#0060FF' notitle,\\"
+    echo  " '../gaa/gaa-messwerte-feuchte-gnuplot.csv' using 1:4 w p ${ls} ${ps} lc rgb '#0060FF' notitle,\\"
+    echo  " '../gaa/gaa-messwerte-feuchte-gnuplot.csv' using 1:5 w p ${ls} ${ps} lc rgb '#0060FF' notitle,\\"
+    echo  " '../gaa/gaa-messwerte-feuchte-gnuplot.csv' using 1:6 w p ${ls} ${ps} lc rgb '#0060FF' notitle,\\"
+fi
+
 

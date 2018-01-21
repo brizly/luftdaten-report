@@ -1,0 +1,18 @@
+#!/bin/bash
+regex="([0-9]{2}).([0-9]{2}).([0-9]{4});([0-9:]{5});([0-9,]*);;([0-9,]*);;([0-9,]*);;([0-9,]*);;([0-9,]*);;"
+cat gaa-messwerte-feuchte.csv | while read line; do
+    if [[ $line =~ $regex ]]
+    then
+        d="${BASH_REMATCH[1]}"
+	m="${BASH_REMATCH[2]}"
+	y="${BASH_REMATCH[3]}"
+	h="${BASH_REMATCH[4]}"
+	pmbsvs="${BASH_REMATCH[5]}"
+	pmhvs="${BASH_REMATCH[6]}"
+	pmbs="${BASH_REMATCH[7]}"
+	pmh="${BASH_REMATCH[8]}"
+	pmsg="${BASH_REMATCH[9]}"
+	
+	echo "${y}-${m}-${d}T${h}:00;${pmh/,/.};${pmhvs/,/.};${pmbs/,/.};${pmbsvs/,/.};${pmsg/,/.}"
+    fi
+done

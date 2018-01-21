@@ -8,26 +8,26 @@ set xtics format "%d"
 set yrange [0:50]
 #https://stackoverflow.com/questions/42855285/plotting-average-curve-for-points-in-gnuplot
 # number of points in moving average
-n = 40
+n = 120
 # initialize the variables
 do for [i=1:n] {
-    eval(sprintf("back%d=0", i))
+    eval(sprintf('back%d=0', i))
 }
 # build shift function (back_n = back_n-1, ..., back1=x)
-shift = "("
+shift = '('
 do for [i=n:2:-1] {
-    shift = sprintf("%sback%d = back%d, ", shift, i, i-1)
+    shift = sprintf('%sback%d = back%d, ', shift, i, i-1)
 } 
-shift = shift."back1 = x)"
+shift = shift.'back1 = x)'
 # uncomment the next line for a check
 # print shift
 
 # build sum function (back1 + ... + backn)
-sum = "(back1"
+sum = '(back1'
 do for [i=2:n] {
-    sum = sprintf("%s+back%d", sum, i)
+    sum = sprintf('%s+back%d', sum, i)
 }
-sum = sum.")"
+sum = sum.')'
 # uncomment the next line for a check
 # print sum
 
@@ -43,6 +43,8 @@ shift_n(x) = @shift
 #plot "test.data" using 1:2 w l notitle, \
 #     "test.data" using 1:(avg_n($2)) w l lc rgb "red" lw 3 title "avg\\_".n
 
-plot '../rohdaten/2017-09-05_sds011_sensor_1947.csv' using 6:7 notitle,\
- '../rohdaten/2017-09-05_sds011_sensor_1947.csv' using 6:(avg_n($7)) w l lc rgb "red" lw 3 notitle,\
+plot '../rohdaten/2017-09-05_sds011_sensor_1947.csv' using 6:7 notitle,
+plot '../rohdaten/2017-09-05_sds011_sensor_1947.csv' using 6:(avg_n($7)) w l lc rgb "red" lw 3 notitle
+plot '../rohdaten/2017-09-05_sds011_sensor_5393.csv' using 6:7 notitle
+
 
