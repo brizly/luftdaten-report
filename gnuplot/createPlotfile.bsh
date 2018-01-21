@@ -8,7 +8,7 @@ pm10_luftdaten="lc rgb '#1c1c1c'"
 pm25_luftdaten="lc rgb '#585858'"
 temp_luftdaten="lc rgb '#B40404'"
 feuchte_luftdaten="lc rgb '#0040FF'"
-pm10_gaa="lc rgb '#848484'"
+pm10_gaa="lc rgb '#1c1c1c'"
 feuchte_gaa="lc rgb '#2E9AFE'"
 echo -n "set output '${loc}-${ym}.png'
 set terminal png size 1920,1000 font ',12'
