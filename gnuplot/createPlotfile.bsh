@@ -1,58 +1,67 @@
 #!/bin/bash
 loc=$1
 ym=$2
+
 plot_luftdaten="w p ls 7 ps 0.3"
 plot_gaa="w l ls 7 lw 3"
-pm10_gaa="lc rgb '#01DFD7'"
-feucht_gaa="lc rgb '#D358F7'"
+pm10_luftdaten="lc rgb '#1c1c1c'"
+pm25_luftdaten="lc rgb '#585858'"
+temp_luftdaten="lc rgb '#B40404'"
+feuchte_luftdaten="lc rgb '#0040FF'"
+pm10_gaa="lc rgb '#BDBDBD'"
+feuchte_gaa="lc rgb '#2E9AFE'"
 echo -n "set output '${loc}-${ym}.png'
 set terminal png size 1920,1000 font ',12'
 set datafile separator ';'
 set xdata time
 set timefmt '%Y-%m-%dT%H:%M:%S'
 set xtics format '%d'
-set yrange [-10:200]
+set yrange [-10:150]
 set xrange ['${ym}-01':'${ym}-31']
 "
 echo -n "plot "
 #staub pm10
 find ../xlsCsv/ -name "sds011-${loc}-*" | while read file; do
-    echo  " '${file}' using 6:7 ${plot_luftdaten} lc rgb '#1c1c1c' notitle,\\"
+    echo  " '${file}' using 6:7 ${plot_luftdaten} ${pm10_luftdaten} notitle,\\"
 done
 #staub pm2.5
 find ../xlsCsv/ -name "sds011-${loc}-*" | while read file; do
-    echo  " '${file}' using 6:10 ${plot_luftdaten} lc rgb '#585858' notitle,\\"
+    echo  " '${file}' using 6:10 ${plot_luftdaten} ${pm25_luftdaten} notitle,\\"
 done
 #temp
 find ../xlsCsv/ -name "dht22-${loc}-*" | while read file; do
-    echo  " '${file}' using 6:7 ${plot_luftdaten} lc rgb '#B40404' notitle,\\"
+    echo  " '${file}' using 6:7 ${plot_luftdaten} ${temp_luftdaten} notitle,\\"
 done
 #feuchte
 find ../xlsCsv/ -name "dht22-${loc}-*" | while read file; do
-    echo  " '${file}' using 6:8 ${plot_luftdaten} lc rgb '#0040FF' notitle,\\"
+    echo  " '${file}' using 6:8 ${plot_luftdaten} ${feuchte_luftdaten} notitle,\\"
 done
 #gaa pm10
 if [ $loc = "hannover" ]; then
     echo  " '../gaa/gaa-messwerte-pm10-gnuplot.csv' using 1:2 ${plot_gaa} ${pm10_gaa} notitle,\\"
     echo  " '../gaa/gaa-messwerte-pm10-gnuplot.csv' using 1:3 ${plot_gaa} ${pm10_gaa} notitle,\\"
-    echo  " '../gaa/gaa-messwerte-feuchte-gnuplot.csv' using 1:2 ${plot_gaa} ${feucht_gaa} notitle,\\"
-    echo  " '../gaa/gaa-messwerte-feuchte-gnuplot.csv' using 1:3 ${plot_gaa} ${feucht_gaa} notitle,\\"
+    echo  " '../gaa/gaa-messwerte-feuchte-gnuplot.csv' using 1:2 ${plot_gaa} ${feuchte_gaa} notitle,\\"
+    echo  " '../gaa/gaa-messwerte-feuchte-gnuplot.csv' using 1:3 ${plot_gaa} ${feuchte_gaa} notitle,\\"
 elif [ $loc = "braunschweig" ]; then
     echo  " '../gaa/gaa-messwerte-pm10-gnuplot.csv' using 1:4 ${plot_gaa} ${pm10_gaa} notitle,\\"
     echo  " '../gaa/gaa-messwerte-pm10-gnuplot.csv' using 1:5 ${plot_gaa} ${pm10_gaa} notitle,\\"
-    echo  " '../gaa/gaa-messwerte-feuchte-gnuplot.csv' using 1:4 ${plot_gaa} ${feucht_gaa} notitle,\\"
-    echo  " '../gaa/gaa-messwerte-feuchte-gnuplot.csv' using 1:5 ${plot_gaa} ${feucht_gaa} notitle,\\"
+    echo  " '../gaa/gaa-messwerte-feuchte-gnuplot.csv' using 1:4 ${plot_gaa} ${feuchte_gaa} notitle,\\"
+    echo  " '../gaa/gaa-messwerte-feuchte-gnuplot.csv' using 1:5 ${plot_gaa} ${feuchte_gaa} notitle,\\"
 elif [ $loc = "lehrte" ]; then
     echo  " '../gaa/gaa-messwerte-pm10-gnuplot.csv' using 1:2 ${plot_gaa} ${pm10_gaa} notitle,\\"
     echo  " '../gaa/gaa-messwerte-pm10-gnuplot.csv' using 1:3 ${plot_gaa} ${pm10_gaa} notitle,\\"
-   echo  " '../gaa/gaa-messwerte-pm10-gnuplot.csv' using 1:4 ${plot_gaa} ${pm10_gaa} notitle,\\"
+    echo  " '../gaa/gaa-messwerte-pm10-gnuplot.csv' using 1:4 ${plot_gaa} ${pm10_gaa} notitle,\\"
     echo  " '../gaa/gaa-messwerte-pm10-gnuplot.csv' using 1:5 ${plot_gaa} ${pm10_gaa} notitle,\\"
     echo  " '../gaa/gaa-messwerte-pm10-gnuplot.csv' using 1:6 ${plot_gaa} ${pm10_gaa} notitle,\\"
-    echo  " '../gaa/gaa-messwerte-feuchte-gnuplot.csv' using 1:2 ${plot_gaa} ${feucht_gaa} notitle,\\"
-    echo  " '../gaa/gaa-messwerte-feuchte-gnuplot.csv' using 1:3 ${plot_gaa} ${feucht_gaa} notitle,\\"
-    echo  " '../gaa/gaa-messwerte-feuchte-gnuplot.csv' using 1:4 ${plot_gaa} ${feucht_gaa} notitle,\\"
-    echo  " '../gaa/gaa-messwerte-feuchte-gnuplot.csv' using 1:5 ${plot_gaa} ${feucht_gaa} notitle,\\"
-    echo  " '../gaa/gaa-messwerte-feuchte-gnuplot.csv' using 1:6 ${plot_gaa} ${feucht_gaa} notitle,\\"
+    echo  " '../gaa/gaa-messwerte-feuchte-gnuplot.csv' using 1:2 ${plot_gaa} ${feuchte_gaa} notitle,\\"
+    echo  " '../gaa/gaa-messwerte-feuchte-gnuplot.csv' using 1:3 ${plot_gaa} ${feuchte_gaa} notitle,\\"
+    echo  " '../gaa/gaa-messwerte-feuchte-gnuplot.csv' using 1:4 ${plot_gaa} ${feuchte_gaa} notitle,\\"
+    echo  " '../gaa/gaa-messwerte-feuchte-gnuplot.csv' using 1:5 ${plot_gaa} ${feuchte_gaa} notitle,\\"
+    echo  " '../gaa/gaa-messwerte-feuchte-gnuplot.csv' using 1:6 ${plot_gaa} ${feuchte_gaa} notitle,\\"
 fi
-
-
+echo " NaN ${plot_gaa} ${pm10_luftdaten} title 'PM10',\\"
+echo " NaN ${plot_gaa} ${pm10_gaa} title 'GAA PM10',\\"
+echo " NaN ${plot_gaa} ${pm25_luftdaten} title 'PM25',\\"
+echo " NaN ${plot_gaa} ${temp_luftdaten} title '°C',\\"
+echo " NaN ${plot_gaa} ${feuchte_luftdaten} title 'Feuchte',\\"
+echo " NaN ${plot_gaa} ${feuchte_gaa} title 'GAA Feuchte'"
