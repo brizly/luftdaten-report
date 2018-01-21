@@ -1,0 +1,19 @@
+#!/bin/bash
+#26.09.2017;00:00;0,030976;0,034243
+regex="([0-9]{2}).([0-9]{2}).([0-9]{4});([0-9:]{5});([0-9,]*);([0-9,]*)"
+cat 2017-12-18-Dankert-PM1024.csv | while read line; do
+    if [[ $line =~ $regex ]]
+    then
+        d="${BASH_REMATCH[1]}"
+	m="${BASH_REMATCH[2]}"
+	y="${BASH_REMATCH[3]}"
+	h="${BASH_REMATCH[4]}"
+	pmbsvs="${BASH_REMATCH[5]}"
+	pmhvs="${BASH_REMATCH[6]}"
+	pmbsvs=${pmbsvs/,/.}
+	pmhvs=${pmhvs/,/.}
+	pmbsvs=$(echo "$pmbsvs * 1000" | bc -l)
+	pmhvs=$(echo "$pmhvs * 1000" | bc -l)
+	echo "${y}-${m}-${d}T${h}:00;${pmbsvs};${pmhvs};"
+    fi
+done
