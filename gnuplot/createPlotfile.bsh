@@ -16,7 +16,7 @@ set datafile separator ';'
 set xdata time
 set timefmt '%Y-%m-%dT%H:%M:%S'
 set xtics format '%d'
-set yrange [0:150]
+set yrange [-5:130]
 set xrange ['${ym}-01':'${ym}-31']
 "
 echo -n "plot "

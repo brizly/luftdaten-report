@@ -21,7 +21,6 @@
 
 \usepackage{graphicx}
 \usepackage{multicol}
-\usepackage{wallpaper}
 
 \begin{document}
 \title{Feinstaub in Lehrte}
@@ -40,11 +39,29 @@
 
 \section{Feinstaub}
 
+\subsection{Ursachen}
+\begin{frame}{Ursachen}
+  \begin{itemize}
+  \item Verkehr
+    \begin{itemize}
+    \item Abgase
+    \item Bremsen, auch von Zügen
+    \item Stau, Umleitungsverkehr, Ferienverkehr
+    \end{itemize}
+  \item Heizung
+  \item Pollen
+  \item Feuer
+  \item Nebel
+  \item Ernte
+  \item Baustelle
+  \end{itemize}
+\end{frame}
+
 \subsection{Gesundheitsrisiken}
 \begin{frame}{Gesundheitsrisiken}
   \begin{itemize}
   \item PM\textsubscript{10} kann in die Nasenhöhle
-  \item PM\textsubscript{2,5} kann in Bronchien und Lungenbläschen 
+  \item PM\textsubscript{2,5} kann in Bronchien und Lungenbläschen
   \item noch kleinere in Lungengewebe und Blutkreislauf
   \item Herz-Kreislauf-Erkrankungen
   \item Asthma, Atemnot, Atemwegserkrankungen
@@ -52,38 +69,24 @@
   \end{itemize}
 \end{frame}
 
-\subsection{Ursachen}
-\begin{frame}{Ursachen}
-  \begin{itemize}
-  \item Verkehr
-    \begin{itemize}
-    \item Abgase
-    \item Bremsen
-    \item Stau, Umleitungsverkehr, Ferienverkehr
-    \end{itemize}
-  \item Heizung
-  \item Pollen
-  \item Feuer
-  \item Nebel
-  \item Ernte, Baustelle
-  \end{itemize}
-\end{frame}
-
 \subsection{Lehrte}
 \begin{frame}{Interessant für Lehrte?}
   \begin{itemize}
+  \item Interpolation Messstellen Hannover und Braunschweig fragwürdig:
+  \item Nähe zu Bundesautobahn
+  \item Nähe zu Autobahnkreuz
+  \item Nähe zu Bahngleisen
+  \item Kleingärten im Stadtkern ``überbauen''?
+  \item Bewusstsein um Feinstaub wächst
   \item ISEK: Innen- vor Außenbebauung infragestellen?
-  \item Kleingärten
-  \item grüne Lunge
-  \item soll Baugebiet weichen
-  \item verträglich?
   \end{itemize}
 \end{frame}
 
 \subsection{Teilnehmer}
 \begin{frame}{Teilnehmer}
+  offizielles Messen ist teuer, also messen wir selbst:
   \begin{itemize}
-  \item Aktionsbündnis Lehrter Laubenpierer
+  \item Aktionsbündnis Lehrter Laubenpieper
   \item DIE LINKE. Lehrte/Sehnde
   \item Piratenpartei Lehrte
   \item Siedlergemeinschaft Hohnhorst Lehrte e.V.
@@ -108,19 +111,20 @@
 \subsection{Stuttgart}
 \begin{frame}{Stuttgart}
   \begin{itemize}
-  \item open Data
+  \item Feinstaub selber messen
   \item Stuttgart im Tal
-  \item Feinstaub messen: teuer?
+  \item \href{https://de.wikipedia.org/wiki/Open_Data}{Open Data}
   \item Projektstart 2015
   \end{itemize}
 \end{frame}
 
 \subsection{Bausatz}
 \begin{frame}{\href{http://luftdaten.info/feinstaubsensor-bauen/}{Bausatz}}
+15 Sensoren in Lehrte, 42 mit Hannover und Braunschweig
   \begin{itemize}
   \item MiniPC mit WLAN: NodeMCU ESP8266
   \item Feinstaubsensor: SDS011
-  \item Temperatur \& Luftfeuche: DHT22 
+  \item Temperatur \& Luftfeuchte: DHT22
   \item Wetterschutz: HT Bogen
   \item Verbindung: USB-Ladekabel, WLAN
   \end{itemize}
@@ -129,7 +133,6 @@
   \end{center}
 \end{frame}
 
-\section{Landkarte}
 \subsection{Europa}
 \begin{frame}{\href{http://hannover.maps.luftdaten.info/\#5/52.373/10.005}{luftdaten.info}}
   \begin{center}
@@ -182,17 +185,17 @@
 \end{frame}
 
 \subsection{September}
-\begin{frame}{Braunschweig September}
+\begin{frame}{Braunschweig September 2017}
   \begin{center}
     \includegraphics[width=\textwidth]{../gnuplot/braunschweig-2017-09.png}
   \end{center}
 \end{frame}
-\begin{frame}{Hannover September}
+\begin{frame}{Hannover September 2017}
   \begin{center}
     \includegraphics[width=\textwidth]{../gnuplot/hannover-2017-09.png}
   \end{center}
 \end{frame}
-\begin{frame}{Lehrte September}
+\begin{frame}{Lehrte September 2017}
   \begin{center}
     \includegraphics[width=\textwidth]{../gnuplot/lehrte-2017-09.png}
   \end{center}
@@ -266,20 +269,19 @@
   \end{center}
 \end{frame}
 
-\section{Fazit]
+\section{Fazit}
 \begin{frame}{Aktuelle Nachrichten}
   \begin{itemize}
   \item Lehrtes Feinstaub liegt \textbf{zwischen} Hannover und Braunschweig?
   \end{itemize}
 \end{frame}
 
-
 \section{Medien}
 \subsection{Medien}
 \begin{frame}{Aktuelle Nachrichten}
   \begin{itemize}
   \item 17-07-27 Augsburger \href{http://www.augsburger-allgemeine.de/panorama/In-Stuttgart-droht-jetzt-ein-Diesel-Fahrverbot-id42204121.html}{Stuttgart droht Diesel-Fahrverbot}
-  \item 17-09-16 Wirtschaftsn \href{https://deutsche-wirtschafts-nachrichten.de/2017/09/16/feinstaub-belastung-vielen-staedten-drohen-fahrverbote/}{Vielen Städten droht Fahrverbot}
+  \item 17-09-16 Wirtschaftsnachrichten \href{https://deutsche-wirtschafts-nachrichten.de/2017/09/16/feinstaub-belastung-vielen-staedten-drohen-fahrverbote/}{Vielen Städten droht Fahrverbot}
   \item 17-09-19 Euronews \href{http://de.euronews.com/2017/09/19/der-deutsche-autowahlkampf}{Deutscher Autowahlkampf}
   \item 17-11-06 Stadt Lehrte referenziert Feinstaub-Projekt \href{http://piratenpartei-lehrte.de/2017/09/11/feinstaub-in-lehrte/}{Feinstaub in Lehrte}
   \item 18-01-04 Silvester \href{https://sbamueller.wordpress.com/2018/01/01/silvester-und-feinstaub/}{Blogger}
@@ -290,9 +292,7 @@
 \section{Quellen}
 \begin{frame}{Angaben}
   \begin{itemize}
-  \item OSM
-  \item luftdaten
-  \item gnuplot
+  \item \href{http://luftdaten.info/}{luftdaten.info}, \href{https://archive.luftdaten.info/}{archiv}
   \item \href{https://www.umwelt.niedersachsen.de/themen/luft/luen/aktuelle_messwerte/archiv/download/}{umwelt.niedersachsen.de Luft Download Archiv}
   \item \href{www.bund-neckar-alb.de/fileadmin/rv_neckar-alb/MasterarbeitBlonFeinstaubmessungimVergleich2017.pdf}{Messprinzip Masterarbeit}
   \item \href{www.analyticjournal.de/fachreports/grimm_nano_tubln_07_09/grimm_nano_pesch.pdf}{analyticjornal.de}
