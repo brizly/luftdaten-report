@@ -3,3 +3,5 @@
 *~
 *.gnuplot
 *.png
+/latex/*
+!/latex/*.tex
