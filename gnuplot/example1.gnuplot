@@ -1,6 +1,6 @@
 set title 'Forkbomb, Attack!!'
 set output 'forkbomb.png'
-set terminal png size 1920,1200
+set terminal png size 1920,1200 transparent truecolor
 set datafile separator ";"
 set xdata time
 set timefmt "%Y-%m-%dT%H:%M:%S"
