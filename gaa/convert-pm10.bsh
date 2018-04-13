@@ -1,6 +1,8 @@
 #!/bin/bash
 regex="([0-9]{2}).([0-9]{2}).([0-9]{4});([0-9:]{5});([0-9,]*); ;([0-9,]*); ;([0-9,]*); ;([0-9,]*); ;([0-9,]*); ;"
-cat gaa-messwerte-pm10.csv | while read line; do
+truncate -s 0 "gaa-messwerte-pm10-gnuplot.csv"
+find . -regextype sed -regex ".*/*-gaa-messwerte-pm10\.csv" \
+	| sort | xargs cat | while read line; do
     if [[ $line =~ $regex ]]
     then
         d="${BASH_REMATCH[1]}"
@@ -13,6 +15,7 @@ cat gaa-messwerte-pm10.csv | while read line; do
 	pmh="${BASH_REMATCH[8]}"
 	pmsg="${BASH_REMATCH[9]}"
 	
-	echo "${y}-${m}-${d}T${h}:00;${pmh/,/.};${pmhvs/,/.};${pmbs/,/.};${pmbsvs/,/.};${pmsg/,/.}"
+	echo "${y}-${m}-${d}T${h}:00;${pmh/,/.};${pmhvs/,/.};${pmbs/,/.};${pmbsvs/,/.};${pmsg/,/.}" \
+	     >> "gaa-messwerte-pm10-gnuplot.csv"
     fi
 done
