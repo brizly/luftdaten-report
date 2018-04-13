@@ -1,0 +1,71 @@
+#!/bin/bash
+sds=$1
+dht=$2
+ym=$3
+
+plot_luftdaten="w p ls 7 ps 0.3"
+pm10_luftdaten="lc rgb '#424242'"
+pm25_luftdaten="lc rgb '#121212'"
+temp_luftdaten="lc rgb '#B40404'"
+feuchte_luftdaten="lc rgb '#0040FF'"
+echo -n "set output 'png/${ym}-${sds}.png'
+set terminal png size 1920,1000 font ',12' enhanced transparent truecolor
+set border lw 1 lc rgb 'white'
+set datafile separator ';'
+set xdata time
+set timefmt '%Y-%m-%dT%H:%M:%S'
+set xtics format '%d' textcolor rgb 'white'
+set xlabel textcolor rgb 'white'
+set ylabel textcolor rgb 'white'
+set key textcolor rgb 'white'
+set ytics textcolor rgb 'white'
+set yrange [-5:205]
+set xrange ['${ym}-01':'${ym}-31']
+#https://stackoverflow.com/questions/42855285/plotting-average-curve-for-points-in-gnuplot
+# number of points in moving average
+n = 42
+# initialize the variables
+do for [i=1:n] {
+    eval(sprintf('back%d=0', i))
+}
+# build shift function (back_n = back_n-1, ..., back1=x)
+shift = '('
+do for [i=n:2:-1] {
+    shift = sprintf('%sback%d = back%d, ', shift, i, i-1)
+} 
+shift = shift.'back1 = x)'
+# uncomment the next line for a check
+# print shift
+
+# build sum function (back1 + ... + backn)
+sum = '(back1'
+do for [i=2:n] {
+    sum = sprintf('%s+back%d', sum, i)
+}
+sum = sum.')'
+# uncomment the next line for a check
+# print sum
+
+# define the functions like in the gnuplot demo
+# use macro expansion for turning the strings into real functions
+samples(x) = \$0 > (n-1) ? n : (\$0+1)
+avg_n(x) = (shift_n(x), @sum/samples(\$0))
+shift_n(x) = @shift
+"
+echo -n "plot "
+#staub pm10
+find ./rawBySensor/ -name "${sds}.csv" | while read file; do
+    echo  " '${file}' using 6:(avg_n(\$7)) ${plot_luftdaten} ${pm10_luftdaten} notitle,\\"
+done
+#staub pm2.5
+find ./rawBySensor/ -name "${sds}.csv" | while read file; do
+    echo  " '${file}' using 6:(avg_n(\$10)) ${plot_luftdaten} ${pm25_luftdaten} notitle,\\"
+done
+#temp
+find ./rawBySensor/ -name "${dht}.csv" | while read file; do
+    echo  " '${file}' using 6:(avg_n(\$7)) ${plot_luftdaten} ${temp_luftdaten} notitle,\\"
+done
+#feuchte
+find ./rawBySensor/ -name "${dht}.csv" | while read file; do
+    echo  " '${file}' using 6:(avg_n(\$8)) ${plot_luftdaten} ${feuchte_luftdaten} notitle,\\"
+done
