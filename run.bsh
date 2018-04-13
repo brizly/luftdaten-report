@@ -1,0 +1,109 @@
+#!/bin/bash -x
+
+#setup
+download_from=2018-04-10
+download_to=2018-04-10
+
+sds_l=(  5424 5426 5428 5430 5432 5434 5436 5440 5438 5442 5444 5393 5446 5448 6181 )
+sds_h=(  1947 6251 3533 6491 6233 3761 6483 5698 5157 1326 3451 5809 6499 6503 5650 6910 )
+sds_bs=( 5519 5393 4186 7049 3924 1537 6777 7279 4024 6557 6003 )
+
+dht_l=(   5425 5427 5429 5431 5433 5435 5437 5441 5439 5443 5445 5394 5447 5449 6182 )
+dht_h=(   1948 6252 3534 6492 6234 3762 6484 5699 5158 1327 3452 5810 6500 6504 5651 6911 )
+dht_bs=(  5520 5394 4187 7050 3925 1538 6778 7280 7529 6558 6004 )
+
+#helper
+sds_all=("${sds_l[@]}" "${sds_h[@]}" "${sds_bs[@]}")
+dht_all=("${dht_l[@]}" "${dht_h[@]}" "${dht_bs[@]}")
+
+##############################################
+##############################################
+##############################################
+archiv="https://archive.luftdaten.info"
+
+#download not already local existing (-f)
+download () {
+    date=$1
+    sid=$2
+    type=$3
+    file="${date}_${type}_sensor_${sid}.csv"
+    if [ -f ${file} ]; then
+	return
+    fi
+    if curl "${archiv}/${date}/${file}" -o /dev/null -s --head --fail; then
+	curl "${archiv}/${date}/${file}" -o "raw/${file}" -s
+    fi
+} 
+
+#merge all timestamped files of a sensor to one file by sensor
+merge () {
+    return #FIXME
+    sid=$1
+    type=$2
+    truncate -s 0 "rawBySensor/${sid}.csv"
+    find ./raw -regextype sed -regex ".*/*_$type_sensor_$sid\.csv" \
+	| sort | xargs cat | grep -v sensor_id >> "rawBySensor/${sid}.csv"
+}
+
+#create a gnuplot-file for each sensor by month (ym), compose each sensor-group in one png by month
+plot() {
+    sid=$1
+    ym=$2
+    loc=$3
+    ./createPlotfileAverage.bsh $sid $((sid+1)) $ym > ./plot/$ym-$sid.gnuplot
+    gnuplot -c plot/$ym-$sid.gnuplot
+    composite png/$ym-$sid.png png/$ym-$loc.png png/$ym-$loc.png
+}
+
+#as plot, but gaa already is "averaged"
+plot_gaa() {
+    ym=$1
+    loc=$2
+    ./createPlotfile.bsh $loc $ym > ./plot/$ym-$loc-gaa.gnuplot
+    gnuplot -c plot/$ym-$loc-gaa.gnuplot
+    composite png/$ym-$loc-gaa.png png/$ym-$loc.png png/$ym-$loc.png
+}
+
+##############################################
+##############################################
+##############################################
+while [ "$download_from" != "$download_to" ]; do 
+    for sid in "${sds_all[@]}"; do
+	download $download_from $sid "sds011"
+    done
+    for sid in "${dht_all[@]}"; do
+	download $download_from $sid "dht22"
+    done
+    download_from=$(date -I -d "$download_from + 1 day")
+done
+
+for sid in ${sds_l[@]};  do merge $sid "sds011"; done
+for sid in ${sds_h[@]};  do merge $sid "sds011"; done
+for sid in ${sds_bs[@]}; do merge $sid "sds011"; done
+
+for sid in ${dht_l[@]}; do merge $sid "dht22"; done
+for sid in ${dht_h[@]}; do merge $sid "dht22"; done
+for sid in ${dht_bs[@]}; do merge $sid "dht22"; done
+
+for ym in '2017-09' '2017-10' '2017-11' '2017-12' '2018-01' '2018-02' '2018-03'; do
+    loc="l"
+    cp empty.png png/$ym-$loc.png
+    for sid in "${sds_l[@]}"; do
+	plot $sid $ym $loc
+    done
+    plot_gaa $ym $loc
+    
+    loc="h"
+    cp empty.png png/$ym-$loc.png
+    for sid in "${sds_h[@]}"; do
+	plot $sid $ym $loc
+    done
+    plot_gaa $ym $loc
+
+    loc="bs"
+    cp empty.png png/$ym-$loc.png    
+    for sid in "${sds_bs[@]}"; do
+	plot $sid $ym $loc
+    done
+    plot_gaa $ym $loc
+done
