@@ -1,8 +1,0 @@
-#!/bin/bash
-for ym in '2017-09' '2017-10' '2017-11' '2017-12' '2018-01'; do
-    echo $ym...
-    for loc in 'lehrte' 'hannover' 'braunschweig'; do
-	./createPlotfile.bsh $loc $ym > $loc-$ym.gnuplot
-	gnuplot -c $loc-$ym.gnuplot
-    done
-done
