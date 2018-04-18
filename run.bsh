@@ -1,8 +1,8 @@
-#!/bin/bash -x
+#!/bin/bash
 
 #setup
-download_from=2018-04-10
-download_to=2018-04-10
+download_from=2017-09-01
+download_to=2018-04-18
 
 sds_l=(  5424 5426 5428 5430 5432 5434 5436 5440 5438 5442 5444 5393 5446 5448 6181 )
 sds_h=(  1947 6251 3533 6491 6233 3761 6483 5698 5157 1326 3451 5809 6499 6503 5650 6910 )
@@ -27,8 +27,8 @@ download () {
     sid=$2
     type=$3
     file="${date}_${type}_sensor_${sid}.csv"
-    if [ -f ${file} ]; then
-	return
+    if [ -f "raw/${file}" ]; then
+	return 0
     fi
     if curl "${archiv}/${date}/${file}" -o /dev/null -s --head --fail; then
 	curl "${archiv}/${date}/${file}" -o "raw/${file}" -s
@@ -37,6 +37,7 @@ download () {
 
 #merge all timestamped files of a sensor to one file by sensor
 merge () {
+    echo -n "."
     return #FIXME
     sid=$1
     type=$2
@@ -47,6 +48,7 @@ merge () {
 
 #create a gnuplot-file for each sensor by month (ym), compose each sensor-group in one png by month
 plot() {
+    echo -n "."
     sid=$1
     ym=$2
     loc=$3
@@ -57,6 +59,7 @@ plot() {
 
 #as plot, but gaa already is "averaged"
 plot_gaa() {
+    echo -n "."
     ym=$1
     loc=$2
     ./createPlotfile.bsh $loc $ym > ./plot/$ym-$loc-gaa.gnuplot
@@ -67,7 +70,12 @@ plot_gaa() {
 ##############################################
 ##############################################
 ##############################################
+if [ ! -d "png" ]; then mkdir -p "png"; fi
+if [ ! -d "raw" ]; then mkdir -p "raw"; fi
+
+echo "downloading"
 while [ "$download_from" != "$download_to" ]; do 
+    echo -n "$download_from..."
     for sid in "${sds_all[@]}"; do
 	download $download_from $sid "sds011"
     done
@@ -77,15 +85,14 @@ while [ "$download_from" != "$download_to" ]; do
     download_from=$(date -I -d "$download_from + 1 day")
 done
 
-for sid in ${sds_l[@]};  do merge $sid "sds011"; done
-for sid in ${sds_h[@]};  do merge $sid "sds011"; done
-for sid in ${sds_bs[@]}; do merge $sid "sds011"; done
+echo ""
+echo -n "merging"
+for sid in ${sds_all[@]};  do merge $sid "sds011"; done
+for sid in ${dht_all[@]}; do merge $sid "dht22"; done
 
-for sid in ${dht_l[@]}; do merge $sid "dht22"; done
-for sid in ${dht_h[@]}; do merge $sid "dht22"; done
-for sid in ${dht_bs[@]}; do merge $sid "dht22"; done
-
-for ym in '2017-09' '2017-10' '2017-11' '2017-12' '2018-01' '2018-02' '2018-03'; do
+echo ""
+echo "plotting"
+for ym in '2017-09' '2017-10' '2017-11' '2017-12' '2018-01' '2018-02' '2018-03' '2018-04'; do
     loc="l"
     cp empty.png png/$ym-$loc.png
     for sid in "${sds_l[@]}"; do
