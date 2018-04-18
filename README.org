@@ -20,8 +20,8 @@ run.bsh
 [[projectgroup][screenshots/IMG_20170902_164405.jpg]]
 
 * sources
-[[https://www.umwelt.niedersachsen.de/themen/luft/luen/aktuelle_messwerte/archiv/download/][umwelt.niedersachsen.de]]
-[[https://archive.luftdaten.info/][archive.luftdaten.info]]
+- [[https://www.umwelt.niedersachsen.de/themen/luft/luen/aktuelle_messwerte/archiv/download/][umwelt.niedersachsen.de]]
+- [[https://archive.luftdaten.info/][archive.luftdaten.info]]
 
 * contact
 [[brizly@freenet.de][mail]]
