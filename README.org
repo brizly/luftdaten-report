@@ -1,10 +1,13 @@
 * luftdaten-report
-visualize luftdaten.info by month and grouped sensors
+visualize data collected by [[https://luftdaten.info/][luftdaten.info]], combined with official measurement points. Grouped by month and grouped sensors.
+Here we make comparable the sensors (official- and project) of sensors in Hannover (h), Braunschweig (bs), and Lehrte (l).
 
 ** requirements
- - bash
- - gnuplot
- - latex
+ - [[https://luftdaten.info/][luftdaten.info]]: project, found in Stuttgart
+ - bash, curl: loop through sensors to download
+ - gnuplot: create images with timeline and sensor measurement-results
+ - composite (imagemagick): combine multiple images by sensor and legend
+ - latex: create browseable pdf with informations about the project
 ** example out
 multiple sensors with separate colors for temperature, humidity, pm10, pm2.5
 
@@ -16,12 +19,23 @@ configure and run script:
 run.bsh
 #+END_SRC
 
+* how it is meant to work
+ - in head we list sensors we want to group (show together by month).
+ - for each sensor and date we download the file from [[https://archive.luftdaten.info][archive.luftdaten.info]], e.g. '.raw/2017-09-01_dht22_sensor_5394.csv'
+ - we merge all files of a sensor to one file by sensor, e.g. '.rawBySensor/5394.csv'
+ - for each month and sensor (combining pm10, pm2.5, temperature, humidity), calling 'createPlotfile.bsh' helps create a templatefile for gnuplot, e.g. 'plot/2017-09-5394.plot'
+ - for each month and sensor (combining pm10, pm2.5, temperature, humidity), calling gnuplot we create a picture, e.g. 'png/2017-09-5394.png'
+ - we combine each picture in sensorgroups and month together, e.g. 'png/2017-09-l.png'
+** postpimp pictures
+ - after (optional) manuel tuning of pictures, e.g. set highlights by weekend
+ - latex/beamer.tex (manually startet) combines pictures to a pdf
+
 * project-group
 [[screenshots/IMG_20170902_164405.jpg]]
 
 * sources
-- [[https://www.umwelt.niedersachsen.de/themen/luft/luen/aktuelle_messwerte/archiv/download/][umwelt.niedersachsen.de]]
-- [[https://archive.luftdaten.info/][archive.luftdaten.info]]
+- [[https://www.umwelt.niedersachsen.de/themen/luft/luen/aktuelle_messwerte/archiv/download/][umwelt.niedersachsen.de]]: download measurement-results from *official* measuring points (german: GAA, Gewerbeaufsichtsamt)
+- [[https://archive.luftdaten.info/][archive.luftdaten.info]]: download measurement-result from *project* measuring point
 
 * contact
 [[brizly@freenet.de][mail]]
