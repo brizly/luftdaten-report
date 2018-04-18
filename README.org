@@ -8,7 +8,7 @@ visualize luftdaten.info by month and grouped sensors
 ** example out
 multiple sensors with separate colors for temperature, humidity, pm10, pm2.5
 
-[[screenshots/2018-02-bs.png][Braunschweig 2018-02]]
+[[screenshots/2018-02-bs.png]]
 
 * usage
 configure and run script:
@@ -17,7 +17,7 @@ run.bsh
 #+END_SRC
 
 * project-group
-[[screenshots/IMG_20170902_164405.jpg][project-group]]
+[[screenshots/IMG_20170902_164405.jpg]]
 
 * sources
 - [[https://www.umwelt.niedersachsen.de/themen/luft/luen/aktuelle_messwerte/archiv/download/][umwelt.niedersachsen.de]]
