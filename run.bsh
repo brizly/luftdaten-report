@@ -70,8 +70,9 @@ plot_gaa() {
 ##############################################
 ##############################################
 ##############################################
-if [ ! -d "png" ]; then mkdir -p "png"; fi
-if [ ! -d "raw" ]; then mkdir -p "raw"; fi
+for dir in "png" "raw" "rawBySensor" "plot"; do
+    if [ ! -d "$dir" ]; then mkdir -p "$dir"; fi
+done
 
 echo "downloading"
 while [ "$download_from" != "$download_to" ]; do 
