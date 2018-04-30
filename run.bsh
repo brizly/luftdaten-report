@@ -1,8 +1,8 @@
 #!/bin/bash
 
 #setup
-download_from=2017-09-01
-download_to=2018-04-18
+download_from=2018-04-29
+download_to=2018-04-29
 
 sds_l=(  5424 5426 5428 5430 5432 5434 5436 5440 5438 5442 5444 5393 5446 5448 6181 )
 sds_h=(  1947 6251 3533 6491 6233 3761 6483 5698 5157 1326 3451 5809 6499 6503 5650 6910 )
@@ -38,7 +38,6 @@ download () {
 #merge all timestamped files of a sensor to one file by sensor
 merge () {
     echo -n "."
-    return #FIXME
     sid=$1
     type=$2
     truncate -s 0 "rawBySensor/${sid}.csv"
