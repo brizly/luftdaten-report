@@ -3,7 +3,7 @@ sds=$1
 dht=$2
 ym=$3
 
-plot_luftdaten="w p ls 7 ps 0.3"
+plot_luftdaten="w p ls 7 ps 0.15"
 pm10_luftdaten="lc rgb '#424242'"
 pm25_luftdaten="lc rgb '#121212'"
 temp_luftdaten="lc rgb '#B40404'"

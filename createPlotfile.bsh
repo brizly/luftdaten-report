@@ -2,7 +2,7 @@
 loc=$1
 ym=$2
 
-plot_gaa="w l ls 7 lw 3"
+plot_gaa="w p ls 7 ps 0.6"
 pm10_gaa="lc rgb '#dedede'"
 feuchte_gaa="lc rgb '#2E9AFE'"
 echo -n "set output 'png/${ym}-${loc}-gaa.png'
