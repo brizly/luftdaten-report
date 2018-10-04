@@ -19,3 +19,4 @@ find . -regextype sed -regex ".*/*-gaa-messwerte-feuchte\.csv" \
 	     >> "gaa-messwerte-feuchte-gnuplot.csv"
     fi
 done
+sort -uo "gaa-messwerte-feuchte-gnuplot.csv" "gaa-messwerte-feuchte-gnuplot.csv"
