@@ -1,16 +1,16 @@
 #!/bin/bash
 
 #setup
-download_from=2018-08-01
-download_to=2018-08-01
+download_from=2018-10-01
+download_to=2018-10-01
 
 sds_l=(  5424 5426 5428 5430 5432 5434 5436 5440 5438 5442 5444 5393 5446 5448 6181 )
-sds_h=(  1947 6251 3533 6491 6233 3761 6483 5698 5157 1326 3451 5809 6499 6503 5650 6910 )
+sds_h=(  1947 6251 3533 6491 6233 3761 6483 5698 5157 1326 3451 5809 6499 6503 5650 6910 9372 10172 )
 sds_bs=( 5519 5393 4186 7049 3924 1537 6777 7279 4024 6557 6003 )
 
 dht_l=(   5425 5427 5429 5431 5433 5435 5437 5441 5439 5443 5445 5394 5447 5449 6182 )
 dht_h=(   1948 6252 3534 6492 6234 3762 6484 5699 5158 1327 3452 5810 6500 6504 5651 6911 )
-dht_bs=(  5520 5394 4187 7050 3925 1538 6778 7280 7529 6558 6004 )
+dht_bs=(  5520 5394 4187 7050 3925 1538 6778 7280 7529 6558 6004 4025 12074 )
 
 #helper
 sds_all=("${sds_l[@]}" "${sds_h[@]}" "${sds_bs[@]}")
@@ -90,10 +90,21 @@ echo -n "merging"
 for sid in ${sds_all[@]};  do merge $sid "sds011"; done
 for sid in ${dht_all[@]}; do merge $sid "dht22"; done
 
+cd gaa
+./convert-pm10.bsh
+./convert-feuchte.bsh
+cd ..
+
 echo ""
 echo "plotting"
-for ym in '2017-09' '2017-10' '2017-11' '2017-12' '2018-01' '2018-02' '2018-03' '2018-04' '2018-05' '2018-06' '2018-07'; do
+ym=2018-07
+currentYm=$(date +%Y-%m)
+while [ "$ym" != "$currentYm" ]; do
+    ym=$(date -d "${ym}-01 + 1 month" +%Y-%m)
     loc="l"
+    #if [ -f png/$ym-$loc.png ]; then
+#continue
+    #fi
     cp empty.png png/$ym-$loc.png
     for sid in "${sds_l[@]}"; do
 	plot $sid $ym $loc
@@ -114,3 +125,6 @@ for ym in '2017-09' '2017-10' '2017-11' '2017-12' '2018-01' '2018-02' '2018-03' 
     done
     plot_gaa $ym $loc
 done
+
+cd latex/
+pdflatex --nonstopmode beamer.tex
